@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include"Game.cpp"
+#include"Game.h"
 
 class CPingPongMFC2View : public CView
 {
@@ -15,6 +15,7 @@ protected: // create from serialization only
 public:
 	CPingPongMFC2Doc* GetDocument() const;
 	GameMaster GM;
+	UINT_PTR Timer;
 
 // Operations
 public:
@@ -43,6 +44,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnFileNew();
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG  // debug version in PingPongMFC2View.cpp

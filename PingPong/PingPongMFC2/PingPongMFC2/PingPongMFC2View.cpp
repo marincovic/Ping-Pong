@@ -27,6 +27,7 @@ BEGIN_MESSAGE_MAP(CPingPongMFC2View, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 	ON_COMMAND(ID_FILE_NEW, &CPingPongMFC2View::OnFileNew)
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 // CPingPongMFC2View construction/destruction
@@ -62,16 +63,15 @@ void CPingPongMFC2View::OnDraw(CDC* pDC)
 
 	CDC dc;
 	dc.CreateCompatibleDC(pDC);
-	dc.SelectObject(CPen(PS_SOLID, 2, RGB(255, 255, 255, )));
+	dc.SelectObject(CPen(PS_SOLID, 2, RGB(0, 0, 0)));
 	// TODO: add draw code for native data here
 
 
 	if (GM.stauts())
 	{
-		dc.FillSolidRect(GM.GetPaddle(1), COLORREF RGB(255, 255, 255));
-		dc.FillSolidRect(GM.GetPaddle(2), COLORREF RGB(255, 255, 255));
+		dc.FillSolidRect(GM.GetPaddle(1), COLORREF RGB(0, 0, 0));
+		dc.FillSolidRect(GM.GetPaddle(2), COLORREF RGB(0, 0, 0));
 		dc.Ellipse(GM.GetBallPosition());
-		CView::Invalidate();
 	}
 }
 
@@ -122,10 +122,26 @@ CPingPongMFC2Doc* CPingPongMFC2View::GetDocument() const // non-debug version is
 void CPingPongMFC2View::OnFileNew()
 {
 	// TODO: Add your command handler code here
-	WINDOWINFO WInfo;
-	CView::GetWindowInfo(&WInfo);
+	RECT Client;
+	GetClientRect(&Client);
 
-	GM = GameMaster(WInfo);
-
+	GM = GameMaster(Client);
 	Invalidate();
+}
+
+
+void CPingPongMFC2View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+	if (nChar == 0x53)
+		GM.PlayerMove(1, 1);
+	else if (nChar == 0x58)
+		GM.PlayerMove(1, 2); 
+	else if (nChar == 0x4B)
+		GM.PlayerMove(2, 1);
+	else if (nChar == 0x4B)
+		GM.PlayerMove(2, 2);
+	//else if ()
 }
