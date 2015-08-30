@@ -18,18 +18,22 @@ public:
 
 	CRect GetBallPosition();
 
-	void Bump();
+	CRect GetPaddle(int player_no);
+
 
 	void BallSpeed();
 
-	void BallMove();
+	
 
 	void PlayerMove(int player, int up_down);
 
-	CRect GetPaddle(int player_no);
+	
+	bool BallMove();
 
-	bool stauts();
+	bool Status();
 
-	void CollisionCheck();
+	bool CollisionCheck();
+
+	bool Score( int player);
 
 };

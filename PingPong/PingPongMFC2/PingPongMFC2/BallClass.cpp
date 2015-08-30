@@ -2,6 +2,7 @@
 #include"BallClass.h"
 
 Ball::Ball(){};
+
 Ball::Ball(RECT Client)
 {
 	m_ballPosition.x = Client.right / 2;
@@ -15,6 +16,7 @@ Ball::Ball(RECT Client)
 	m_speed.y = 0;
 }
 
+
 CRect Ball::GetPosition()
 {
 	POINT Bottom;
@@ -23,15 +25,26 @@ CRect Ball::GetPosition()
 	return CRect(m_ballPosition,Bottom);
 }
 
+
 int Ball::GetBallSize()
 {
 	return m_ballSize;
 }
 
+
 void Ball::SetSpeed()
 {
-	m_speed.x = 3;
-	m_speed.y = 3;
+	srand(time(NULL));
+	if (rand > 0)
+	{
+		m_speed.x = -1;
+		m_speed.y = 1;
+	}
+	else
+	{
+		m_speed.x = 1;
+		m_speed.y = -1;
+	}
 }
 
 void Ball::ChangeSpeedX()
@@ -50,8 +63,8 @@ void Ball::BallMove()
 	m_ballPosition.y += m_speed.y;
 }
 
-void Ball::Bump()
+void Ball::ResetBall(RECT Client)
 {
-	m_speed.x *= 2;
-	m_speed.y *= 2;
+	m_ballPosition.x = Client.right / 2;
+	m_ballPosition.y = Client.bottom / 2;
 }

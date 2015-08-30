@@ -28,6 +28,10 @@ BEGIN_MESSAGE_MAP(CPingPongMFC2View, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CView::OnFilePrintPreview)
 	ON_COMMAND(ID_FILE_NEW, &CPingPongMFC2View::OnFileNew)
 	ON_WM_KEYDOWN()
+	ON_WM_GETMINMAXINFO()
+	ON_WM_CREATE()
+	ON_WM_TIMER()
+	ON_COMMAND(ID_FILE_ABOUT, &CPingPongMFC2View::OnFileAbout)
 END_MESSAGE_MAP()
 
 // CPingPongMFC2View construction/destruction
@@ -61,17 +65,14 @@ void CPingPongMFC2View::OnDraw(CDC* pDC)
 	if (!pDoc)
 		return;
 
-	CDC dc;
-	dc.CreateCompatibleDC(pDC);
-	dc.SelectObject(CPen(PS_SOLID, 2, RGB(0, 0, 0)));
 	// TODO: add draw code for native data here
 
 
-	if (GM.stauts())
+	if (GM.Status())
 	{
-		dc.FillSolidRect(GM.GetPaddle(1), COLORREF RGB(0, 0, 0));
-		dc.FillSolidRect(GM.GetPaddle(2), COLORREF RGB(0, 0, 0));
-		dc.Ellipse(GM.GetBallPosition());
+		pDC->FillSolidRect(GM.GetPaddle(1), COLORREF RGB(0, 0, 0));
+		pDC->FillSolidRect(GM.GetPaddle(2), COLORREF RGB(0, 0, 0));
+		pDC->Ellipse(GM.GetBallPosition());
 	}
 }
 
@@ -124,7 +125,7 @@ void CPingPongMFC2View::OnFileNew()
 	// TODO: Add your command handler code here
 	RECT Client;
 	GetClientRect(&Client);
-
+	
 	GM = GameMaster(Client);
 	Invalidate();
 }
@@ -141,7 +142,48 @@ void CPingPongMFC2View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		GM.PlayerMove(1, 2); 
 	else if (nChar == 0x4B)
 		GM.PlayerMove(2, 1);
-	else if (nChar == 0x4B)
+	else if (nChar == 0x4D)
 		GM.PlayerMove(2, 2);
-	//else if ()
+	else if (nChar == VK_SPACE)
+		Timer = SetTimer(1, 10, 0);
+	Invalidate();
+}
+
+
+void CPingPongMFC2View::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+	// TODO: Add your message handler code here and/or call default
+	lpMMI->ptMaxSize.x = 800;
+	lpMMI->ptMaxSize.y = 800;
+	
+
+	CView::OnGetMinMaxInfo(lpMMI);
+}
+
+
+int CPingPongMFC2View::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+	HWND hwnd = GetSafeHwnd();
+	// TODO:  Add your specialized creation code here
+	SetWindowPos(&CWnd::wndTop, 100, 100, 900, 900, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+	return 0;
+}
+
+
+void CPingPongMFC2View::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: Add your message handler code here and/or call default
+	if(GM.BallMove())
+		KillTimer(Timer);
+	
+	CView::OnTimer(nIDEvent);
+	Invalidate();
+}
+
+
+void CPingPongMFC2View::OnFileAbout()
+{
+	// TODO: Add your command handler code here
 }

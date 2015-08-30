@@ -17,6 +17,8 @@ public:
 
 	int GetBallSize();
 
+	void ResetBall(RECT Client);
+
 	void SetSpeed();
 
 	void ChangeSpeedX();
@@ -24,6 +26,4 @@ public:
 	void ChangeSpeedY();
 
 	void BallMove();
-
-	void Bump();
 };

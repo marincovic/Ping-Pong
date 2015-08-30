@@ -16,6 +16,7 @@ public:
 	CPingPongMFC2Doc* GetDocument() const;
 	GameMaster GM;
 	UINT_PTR Timer;
+	UINT_PTR IncTimer;
 
 // Operations
 public:
@@ -45,6 +46,10 @@ protected:
 public:
 	afx_msg void OnFileNew();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnFileAbout();
 };
 
 #ifndef _DEBUG  // debug version in PingPongMFC2View.cpp
