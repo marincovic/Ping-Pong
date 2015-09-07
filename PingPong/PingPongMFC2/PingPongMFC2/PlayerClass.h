@@ -17,16 +17,12 @@ public:
 
 
 	CRect GetPaddle();
-
-
-	void SetPaddle(POINT NewPosition);
-
+	
+	void SetClient(CRect client);
+	void SetPaddle(CRect NewPosition, int player);
 	void PaddleUp();
-
 	void PaddleDown();
-
 	void Score();
-
 	void PaddleBump();
-
+	void SetSize(CRect client);
 };

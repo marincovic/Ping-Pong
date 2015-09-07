@@ -15,8 +15,8 @@ protected: // create from serialization only
 public:
 	CPingPongMFC2Doc* GetDocument() const;
 	GameMaster GM;
-	UINT_PTR Timer;
-	UINT_PTR IncTimer;
+	UINT_PTR Timer = 0;
+
 
 // Operations
 public:
@@ -47,9 +47,10 @@ public:
 	afx_msg void OnFileNew();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+//	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	afx_msg void OnFileAbout();
+//	afx_msg void OnFileAbout();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
 
 #ifndef _DEBUG  // debug version in PingPongMFC2View.cpp

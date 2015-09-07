@@ -29,9 +29,10 @@ BEGIN_MESSAGE_MAP(CPingPongMFC2View, CView)
 	ON_COMMAND(ID_FILE_NEW, &CPingPongMFC2View::OnFileNew)
 	ON_WM_KEYDOWN()
 	ON_WM_GETMINMAXINFO()
-	ON_WM_CREATE()
+//	ON_WM_CREATE()
 	ON_WM_TIMER()
-	ON_COMMAND(ID_FILE_ABOUT, &CPingPongMFC2View::OnFileAbout)
+//	ON_COMMAND(ID_FILE_ABOUT, &CPingPongMFC2View::OnFileAbout)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 // CPingPongMFC2View construction/destruction
@@ -52,6 +53,10 @@ BOOL CPingPongMFC2View::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs
+
+	cs.style &= ~WS_THICKFRAME;
+	cs.cx = 800;
+	cs.cy = 600;
 
 	return CView::PreCreateWindow(cs);
 }
@@ -145,7 +150,10 @@ void CPingPongMFC2View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	else if (nChar == 0x4D)
 		GM.PlayerMove(2, 2);
 	else if (nChar == VK_SPACE)
-		Timer = SetTimer(1, 10, 0);
+	{
+		Timer = SetTimer(1, 1, 0);
+		GM.SetPlaying();
+	}
 	Invalidate();
 }
 
@@ -153,37 +161,66 @@ void CPingPongMFC2View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CPingPongMFC2View::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 {
 	// TODO: Add your message handler code here and/or call default
-	lpMMI->ptMaxSize.x = 800;
-	lpMMI->ptMaxSize.y = 800;
+	lpMMI->ptMinTrackSize.x = 800;
+	lpMMI->ptMinTrackSize.y = 600;
 	
 
 	CView::OnGetMinMaxInfo(lpMMI);
 }
 
 
-int CPingPongMFC2View::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if (CView::OnCreate(lpCreateStruct) == -1)
-		return -1;
-	HWND hwnd = GetSafeHwnd();
-	// TODO:  Add your specialized creation code here
-	SetWindowPos(&CWnd::wndTop, 100, 100, 900, 900, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
-	return 0;
-}
+//int CPingPongMFC2View::OnCreate(LPCREATESTRUCT lpCreateStruct)
+//{
+//	if (CView::OnCreate(lpCreateStruct) == -1)
+//		return -1;
+//	HWND hwnd = GetSafeHwnd();
+//	// TODO:  Add your specialized creation code here
+//	SetWindowPos(&CWnd::wndTop, 100, 100, 900, 900, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
+//	return 0;
+//}
 
 
 void CPingPongMFC2View::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: Add your message handler code here and/or call default
-	if(GM.BallMove())
-		KillTimer(Timer);
 	
-	CView::OnTimer(nIDEvent);
+	if (GM.BallMove())
+	{
+		KillTimer(Timer);
+		GM.SetPlaying();
+	}
+
 	Invalidate();
+	CView::OnTimer(nIDEvent);
+	
 }
 
 
-void CPingPongMFC2View::OnFileAbout()
+//void CPingPongMFC2View::OnFileAbout()
+//{
+//	// TODO: Add your command handler code here
+//}
+
+
+void CPingPongMFC2View::OnSize(UINT nType, int cx, int cy)
 {
-	// TODO: Add your command handler code here
+		
+
+	CView::OnSize(nType, cx, cy);
+
+	// TODO: Add your message handler code here
+	CRect window;
+	GetClientRect(window);
+
+	if (GM.PlayingStatus())
+		return;
+
+	GM.SetBallSize(window);
+	GM.SetPlayerSize(window, 1);
+	GM.SetPlayerSize(window, 2);
+
+	GM.SetClient(window);
+	GM.SetPosition(window);
+
+	Invalidate();
 }

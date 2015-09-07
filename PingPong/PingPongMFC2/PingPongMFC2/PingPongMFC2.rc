@@ -96,15 +96,6 @@ IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
 
 IDR_MAINFRAME TOOLBAR 16, 15
 BEGIN
-    BUTTON      ID_FILE_NEW
-    BUTTON      ID_FILE_OPEN
-    BUTTON      ID_FILE_SAVE
-    SEPARATOR
-    BUTTON      ID_EDIT_CUT
-    BUTTON      ID_EDIT_COPY
-    BUTTON      ID_EDIT_PASTE
-    SEPARATOR
-    BUTTON      ID_FILE_PRINT
     BUTTON      ID_APP_ABOUT
 END
 
@@ -131,7 +122,7 @@ END
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOGEX 0, 0, 307, 106
+IDD_ABOUTBOX DIALOGEX 0, 0, 307, 137
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About PingPongMFC2"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
@@ -139,10 +130,11 @@ BEGIN
     LTEXT           "Player 1 Controles",IDC_STATIC,7,19,70,8
     LTEXT           "Up: s",IDC_STATIC,7,41,58,8
     LTEXT           "Down: x",IDC_STATIC,7,63,53,9
-    LTEXT           "Player 1 Controles",IDC_STATIC,90,19,70,8
+    LTEXT           "Player 2 Controles",IDC_STATIC,90,19,70,8
     LTEXT           "Up: s",IDC_STATIC,90,41,58,8
     LTEXT           "Down: x",IDC_STATIC,90,63,53,9
     LTEXT           "Cilj igre je natjerati protivnika da ne uspije odbiti lopticu 5 puta tj ""zabiti mu gol"" 5 puta",IDC_STATIC,7,84,276,8
+    LTEXT           "Igra se zapocinje tako da se u klikne na File pa na New",IDC_STATIC,7,102,175,8
 END
 
 
@@ -199,7 +191,7 @@ BEGIN
         RIGHTMARGIN, 300
         VERTGUIDE, 90
         TOPMARGIN, 7
-        BOTTOMMARGIN, 99
+        BOTTOMMARGIN, 130
         HORZGUIDE, 27
         HORZGUIDE, 49
         HORZGUIDE, 72

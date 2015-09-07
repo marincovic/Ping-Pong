@@ -4,7 +4,6 @@
 
 
 GameMaster::GameMaster(){};
-
 GameMaster::GameMaster(RECT Client) : m_ball(Ball(Client)), m_player1(Player(Client, 1)), m_player2(Player(Client, 2))
 {
 	m_WInfo = Client;
@@ -12,12 +11,25 @@ GameMaster::GameMaster(RECT Client) : m_ball(Ball(Client)), m_player1(Player(Cli
 	active = true;
 }
 
+void GameMaster::SetBallSize(CRect client)
+{
+	return m_ball.SetSize(client);
+}
+void GameMaster::SetPlayerSize(CRect client, int player_no)
+{
+	switch (player_no)
+	{
+	case 1:
+		GameMaster::m_player1.SetSize(client);
+	case 2:
+		GameMaster::m_player2.SetSize(client);
+	}
+}
 
 CRect GameMaster::GetBallPosition()
 {
 	return m_ball.GetPosition();
 }
-
 CRect GameMaster::GetPaddle(int player_no)
 {
 	switch (player_no)
@@ -27,6 +39,8 @@ CRect GameMaster::GetPaddle(int player_no)
 	case 2:
 		return m_player2.GetPaddle();
 	}
+
+	return NULL;
 }
 
 
@@ -34,7 +48,6 @@ void GameMaster::BallSpeed()
 {
 	m_ball.SetSpeed();
 }
-
 void GameMaster::PlayerMove(int player, int up_down)
 {
 	switch (player)
@@ -64,18 +77,42 @@ void GameMaster::PlayerMove(int player, int up_down)
 	}
 	CollisionCheck();
 }
+void GameMaster::SetClient(CRect client)
+{
+	m_WInfo = client;
+	m_ball.SetClient(client);
+	m_player1.SetClient(client);
+	m_player2.SetClient(client);
+}
+void GameMaster::SetPosition(CRect Position)
+{
+	m_player1.SetPaddle(Position,1);
+	m_player2.SetPaddle(Position,2);
+	m_ball.SetPosition(Position);
+
+}
+void GameMaster::SetPlaying()
+{
+	if (playing)
+		playing = false;
+	else
+		playing = true;
+}
 
 
 
 bool GameMaster::Status()
 {
 	if (active == true)
-		active == false;
+		active = false;
 	else
-		active == true;
+		active = true;
 	return active;
 }
-
+bool GameMaster::PlayingStatus()
+{
+	return playing;
+}
 bool GameMaster::CollisionCheck()
 {
 	if (m_ball.GetPosition().TopLeft().x + 1 <= m_player1.GetPaddle().BottomRight().x &&
@@ -88,7 +125,7 @@ bool GameMaster::CollisionCheck()
 		m_ball.GetPosition().TopLeft().y + 1 <= m_player2.GetPaddle().BottomRight().y)
 		m_ball.ChangeSpeedX();
 
-	if (m_ball.GetPosition().TopLeft().y == m_WInfo.top || m_ball.GetPosition().BottomRight().y == m_WInfo.bottom)
+	if (m_ball.GetPosition().TopLeft().y+1 <= m_WInfo.top || m_ball.GetPosition().BottomRight().y+1 >= m_WInfo.bottom)
 		m_ball.ChangeSpeedY();
 
 	if (m_ball.GetPosition().TopLeft().x <= m_player1.GetPaddle().BottomRight().x - 5)
@@ -104,7 +141,6 @@ bool GameMaster::CollisionCheck()
 	return false;
 
 }
-
 bool GameMaster::Score(int player)
 {
 	switch (player)
@@ -123,7 +159,6 @@ bool GameMaster::Score(int player)
 
 	return true;
 }
-
 bool GameMaster::BallMove()
 {
 	m_ball.BallMove();
