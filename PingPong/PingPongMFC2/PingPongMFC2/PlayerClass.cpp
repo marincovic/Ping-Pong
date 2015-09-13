@@ -66,3 +66,8 @@ void Player::SetClient(CRect client)
 {
 	m_Client = client;
 }
+
+int Player::GetScore()
+{
+	return m_points;
+}

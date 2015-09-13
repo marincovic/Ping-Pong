@@ -25,4 +25,6 @@ public:
 	void Score();
 	void PaddleBump();
 	void SetSize(CRect client);
+
+	int GetScore();
 };

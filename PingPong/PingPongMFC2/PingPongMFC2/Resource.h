@@ -4,6 +4,7 @@
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
+#define IDS_PREGAMEINFO                 101
 #define IDR_MAINFRAME                   128
 #define IDR_PingPongMFC2TYPE            130
 #define ID_Menu                         32771

@@ -103,9 +103,7 @@ void GameMaster::SetPlaying()
 
 bool GameMaster::Status()
 {
-	if (active == true)
-		active = false;
-	else
+	if (active == false)
 		active = true;
 	return active;
 }
@@ -163,4 +161,19 @@ bool GameMaster::BallMove()
 {
 	m_ball.BallMove();
 	return CollisionCheck();
+}
+
+int GameMaster::GetScore(int player)
+{
+	switch (player)
+	{
+	case 1:
+		return m_player1.GetScore();
+		break;
+	case 2:
+		return m_player2.GetScore();
+		break;
+	default:
+		break;
+	}
 }

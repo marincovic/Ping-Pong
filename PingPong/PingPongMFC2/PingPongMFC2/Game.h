@@ -34,4 +34,6 @@ public:
 	bool CollisionCheck();
 	bool Score( int player);
 
+	int GetScore(int player);
+
 };

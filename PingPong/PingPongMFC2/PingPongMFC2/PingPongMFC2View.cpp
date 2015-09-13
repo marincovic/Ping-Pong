@@ -29,10 +29,9 @@ BEGIN_MESSAGE_MAP(CPingPongMFC2View, CView)
 	ON_COMMAND(ID_FILE_NEW, &CPingPongMFC2View::OnFileNew)
 	ON_WM_KEYDOWN()
 	ON_WM_GETMINMAXINFO()
-//	ON_WM_CREATE()
 	ON_WM_TIMER()
-//	ON_COMMAND(ID_FILE_ABOUT, &CPingPongMFC2View::OnFileAbout)
 	ON_WM_SIZE()
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 // CPingPongMFC2View construction/destruction
@@ -72,6 +71,18 @@ void CPingPongMFC2View::OnDraw(CDC* pDC)
 
 	// TODO: add draw code for native data here
 
+	CRect rect;
+	GetClientRect(rect);
+
+	CRect position = CRect(0, rect.Width() / 2 - 70, 15, rect.Width() / 2 + 70);
+
+
+	CString str = CString(_T("Za Zapoceti igru pretisnite File->New. Za dodatne informacije kliknite na ? ispod File."));
+
+	if (!GM.Status())
+	{
+		pDC->DrawText(str, position, DT_CENTER);
+	}
 
 	if (GM.Status())
 	{
@@ -79,6 +90,11 @@ void CPingPongMFC2View::OnDraw(CDC* pDC)
 		pDC->FillSolidRect(GM.GetPaddle(2), COLORREF RGB(0, 0, 0));
 		pDC->Ellipse(GM.GetBallPosition());
 	}
+
+	if (GM.GetScore(1)>=5)
+		pDC->DrawText(_T("Player 1 won"), position, DT_CENTER);
+	else if (GM.GetScore(2)>=5)
+		pDC->DrawText(_T("Player 2 won"), position, DT_CENTER);
 }
 
 
@@ -163,21 +179,13 @@ void CPingPongMFC2View::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 	// TODO: Add your message handler code here and/or call default
 	lpMMI->ptMinTrackSize.x = 800;
 	lpMMI->ptMinTrackSize.y = 600;
+
+	lpMMI->ptMaxTrackSize.x = 800;
+	lpMMI->ptMaxTrackSize.x = 600;
 	
 
 	CView::OnGetMinMaxInfo(lpMMI);
 }
-
-
-//int CPingPongMFC2View::OnCreate(LPCREATESTRUCT lpCreateStruct)
-//{
-//	if (CView::OnCreate(lpCreateStruct) == -1)
-//		return -1;
-//	HWND hwnd = GetSafeHwnd();
-//	// TODO:  Add your specialized creation code here
-//	SetWindowPos(&CWnd::wndTop, 100, 100, 900, 900, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
-//	return 0;
-//}
 
 
 void CPingPongMFC2View::OnTimer(UINT_PTR nIDEvent)
@@ -187,7 +195,6 @@ void CPingPongMFC2View::OnTimer(UINT_PTR nIDEvent)
 	if (GM.BallMove())
 	{
 		KillTimer(Timer);
-		GM.SetPlaying();
 	}
 
 	Invalidate();
@@ -196,15 +203,8 @@ void CPingPongMFC2View::OnTimer(UINT_PTR nIDEvent)
 }
 
 
-//void CPingPongMFC2View::OnFileAbout()
-//{
-//	// TODO: Add your command handler code here
-//}
-
-
 void CPingPongMFC2View::OnSize(UINT nType, int cx, int cy)
 {
-		
 
 	CView::OnSize(nType, cx, cy);
 
@@ -212,15 +212,31 @@ void CPingPongMFC2View::OnSize(UINT nType, int cx, int cy)
 	CRect window;
 	GetClientRect(window);
 
-	if (GM.PlayingStatus())
+	if (!GM.PlayingStatus())
 		return;
 
 	GM.SetBallSize(window);
 	GM.SetPlayerSize(window, 1);
 	GM.SetPlayerSize(window, 2);
 
+
 	GM.SetClient(window);
 	GM.SetPosition(window);
+	
 
 	Invalidate();
+}
+
+
+int CPingPongMFC2View::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	// TODO:  Add your specialized creation code here
+
+	lpCreateStruct->cx = 800;
+	lpCreateStruct->cy = 600;
+
+	return 0;
 }
