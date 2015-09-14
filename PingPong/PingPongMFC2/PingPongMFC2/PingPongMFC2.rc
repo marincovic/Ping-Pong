@@ -127,14 +127,16 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "About PingPongMFC2"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    LTEXT           "Player 1 Controles",IDC_STATIC,7,19,70,8
+    LTEXT           "Player 1 controles",IDC_STATIC,7,19,70,8
     LTEXT           "Up: s",IDC_STATIC,7,41,58,8
     LTEXT           "Down: x",IDC_STATIC,7,63,53,9
-    LTEXT           "Player 2 Controles",IDC_STATIC,90,19,70,8
-    LTEXT           "Up: s",IDC_STATIC,90,41,58,8
-    LTEXT           "Down: x",IDC_STATIC,90,63,53,9
-    LTEXT           "Cilj igre je natjerati protivnika da ne uspije odbiti lopticu 5 puta tj ""zabiti mu gol"" 5 puta",IDC_STATIC,7,84,276,8
-    LTEXT           "Igra se zapocinje tako da se u klikne na File pa na New",IDC_STATIC,7,102,175,8
+    LTEXT           "Player 2 controles",IDC_STATIC,90,19,70,8
+    LTEXT           "Up: k",IDC_STATIC,90,41,58,8
+    LTEXT           "Down: m",IDC_STATIC,90,63,53,9
+    CONTROL         "The aim is to make the opponent fail to reject the ball 5 times ",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | WS_GROUP,7,122,198,8
+    LTEXT           "The game starts by a click on File and the New",IDC_STATIC,7,84,149,8
+    LTEXT           "To run the ball you must press Space",IDC_STATIC,7,103,119,8
 END
 
 
@@ -208,7 +210,11 @@ END
 STRINGTABLE
 BEGIN
     IDP_OLE_INIT_FAILED     "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
-    IDS_PREGAMEINFO         "Za Zapoceti igru pretisnite File->New. Za dodatne informacije kliknite na ? ispod File."
+    IDS_PREGAMEINFO         "To start the game , press File- > New . For more information, click on ? under File ."
+    IDS_PLAYER1WON          "Player 1 won"
+    IDS_PLAYER2WON          "Player 2 won"
+    IDS_PLAYER1             "Player 1"
+    IDS_PLAYER2             "Player 2"
 END
 
 STRINGTABLE

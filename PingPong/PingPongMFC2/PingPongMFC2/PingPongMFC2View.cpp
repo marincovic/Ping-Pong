@@ -12,6 +12,8 @@
 #include "PingPongMFC2Doc.h"
 #include "PingPongMFC2View.h"
 
+#include<string>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -74,27 +76,51 @@ void CPingPongMFC2View::OnDraw(CDC* pDC)
 	CRect rect;
 	GetClientRect(rect);
 
-	CRect position = CRect(0, rect.Width() / 2 - 70, 15, rect.Width() / 2 + 70);
+	CRect position = CRect(0, 0, 550, 15);
 
-
-	CString str = CString(_T("Za Zapoceti igru pretisnite File->New. Za dodatne informacije kliknite na ? ispod File."));
+	CString s; s.LoadStringW(IDS_PREGAMEINFO);
 
 	if (!GM.Status())
 	{
-		pDC->DrawText(str, position, DT_CENTER);
+		pDC->DrawText(s, position, DT_LEFT);
 	}
 
-	if (GM.Status())
+	if (GM.Status() || GM.Won())
 	{
+		COLORREF back_color = pDC->GetBkColor();
 		pDC->FillSolidRect(GM.GetPaddle(1), COLORREF RGB(0, 0, 0));
 		pDC->FillSolidRect(GM.GetPaddle(2), COLORREF RGB(0, 0, 0));
 		pDC->Ellipse(GM.GetBallPosition());
+		pDC->SetBkColor(back_color);
+		s.LoadStringW(IDS_PLAYER1);
+		pDC->DrawText(s, CRect(0, 0, 80, 15), DT_LEFT);
+		s.LoadStringW(IDS_PLAYER2);
+		pDC->DrawText(s, CRect(100, 0, 170, 15), DT_LEFT);
+		int score1, score2;
+		score1 = GM.GetScore(1);
+		score2 = GM.GetScore(2);
+		CString string1;
+		string1.Format(_T("%d"), score1);
+		pDC->DrawText(string1, CRect(70, 0, 80, 15), DT_LEFT);
+		string1.Format(_T("%d"), score2);
+		pDC->DrawText(string1, CRect(180, 0, 265, 15), DT_LEFT);
 	}
 
-	if (GM.GetScore(1)>=5)
-		pDC->DrawText(_T("Player 1 won"), position, DT_CENTER);
-	else if (GM.GetScore(2)>=5)
-		pDC->DrawText(_T("Player 2 won"), position, DT_CENTER);
+	if (GM.GetScore(1) >= 5)
+	{
+		GM.SetWon();
+		KillTimer(Timer);
+		s.LoadStringW(IDS_PLAYER1WON);
+		pDC->DrawText(s, CRect(50, 50, 550, 215), DT_LEFT);
+	}
+	else if (GM.GetScore(2) >= 5)
+	{
+		GM.SetWon();
+		KillTimer(Timer);
+		s.LoadStringW(IDS_PLAYER2WON);
+		pDC->DrawText(s, CRect(50, 50, 550, 215), DT_LEFT);
+
+	}
 }
 
 
@@ -146,8 +172,12 @@ void CPingPongMFC2View::OnFileNew()
 	// TODO: Add your command handler code here
 	RECT Client;
 	GetClientRect(&Client);
-	
+
+	if (Timer)
+		KillTimer(Timer);
 	GM = GameMaster(Client);
+	GM.SetStatus();
+	GM.SetPlaying();
 	Invalidate();
 }
 
@@ -167,8 +197,12 @@ void CPingPongMFC2View::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		GM.PlayerMove(2, 2);
 	else if (nChar == VK_SPACE)
 	{
-		Timer = SetTimer(1, 1, 0);
-		GM.SetPlaying();
+		if (!GM.Won())
+		{
+			Timer = SetTimer(1, 1, 0);
+
+		}
+		
 	}
 	Invalidate();
 }

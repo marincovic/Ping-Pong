@@ -30,7 +30,7 @@ CRect Player::GetPaddle()
 
 void Player::PaddleUp()
 	{
-	if (m_position.y <= m_Client.TopLeft().y)
+	if (m_position.y <= m_Client.TopLeft().y+15)
 		return;
 		m_position.y -= 5;
 	}

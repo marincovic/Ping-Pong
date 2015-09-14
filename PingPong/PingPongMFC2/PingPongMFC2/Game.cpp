@@ -93,18 +93,22 @@ void GameMaster::SetPosition(CRect Position)
 }
 void GameMaster::SetPlaying()
 {
-	if (playing)
-		playing = false;
-	else
+	if (!playing)
 		playing = true;
+}
+void GameMaster::SetStatus()
+{
+	active = true;
+}
+void GameMaster::SetWon()
+{
+	won = true;
 }
 
 
 
 bool GameMaster::Status()
 {
-	if (active == false)
-		active = true;
 	return active;
 }
 bool GameMaster::PlayingStatus()
@@ -123,7 +127,7 @@ bool GameMaster::CollisionCheck()
 		m_ball.GetPosition().TopLeft().y + 1 <= m_player2.GetPaddle().BottomRight().y)
 		m_ball.ChangeSpeedX();
 
-	if (m_ball.GetPosition().TopLeft().y+1 <= m_WInfo.top || m_ball.GetPosition().BottomRight().y+1 >= m_WInfo.bottom)
+	if (m_ball.GetPosition().TopLeft().y <= m_WInfo.top + 15 || m_ball.GetPosition().BottomRight().y >= m_WInfo.bottom)
 		m_ball.ChangeSpeedY();
 
 	if (m_ball.GetPosition().TopLeft().x <= m_player1.GetPaddle().BottomRight().x - 5)
@@ -161,6 +165,10 @@ bool GameMaster::BallMove()
 {
 	m_ball.BallMove();
 	return CollisionCheck();
+}
+bool GameMaster::Won()
+{
+	return won;
 }
 
 int GameMaster::GetScore(int player)

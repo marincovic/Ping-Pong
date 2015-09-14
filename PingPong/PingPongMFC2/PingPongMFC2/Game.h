@@ -10,6 +10,7 @@ private:
 	Player m_player1, m_player2;
 	bool active = false;
 	bool playing = false;
+	bool won = false;
 	RECT m_WInfo;
 
 public:
@@ -27,12 +28,15 @@ public:
 	void BallSpeed();
 	void PlayerMove(int player, int up_down);
 	void SetPlaying();
+	void SetStatus();
+	void SetWon();
 
 	bool BallMove();
 	bool Status();
 	bool PlayingStatus();
 	bool CollisionCheck();
 	bool Score( int player);
+	bool Won();
 
 	int GetScore(int player);
 
